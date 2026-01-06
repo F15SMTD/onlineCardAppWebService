@@ -33,8 +33,8 @@ app.get('/allcars', async (req, res) => {
         const [rows] = await connection.execute('SELECT * FROM defaultdb.cars');
         res.json(rows);
     } catch (error) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error for allcards' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error for allcars' });
     }
 });
 
@@ -45,8 +45,8 @@ app.post('/addcar', async (req, res) => {
         let connection = await mysql.createConnection(dbConfig);
         await connection.execute('INSERT INTO cars (car_name, car_price, car_image) VALUES (?, ?, ?)',[car_name, car_price, car_image]);
         res.status(201).json({ message: 'Card' +car_name + 'successfully added' });
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Server error - could not add card '+ car_name});
     }
 }); 
