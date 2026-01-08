@@ -52,7 +52,7 @@ app.post('/addcar', async (req, res) => {
 }); 
 
 //example route: delete a car
-app.post('/deletecar', async (req, res) => {
+app.delete('/deletecar', async (req, res) => {
     const { car_id } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
@@ -65,7 +65,7 @@ app.post('/deletecar', async (req, res) => {
 }); 
 
 //example route: modify a car
-app.post('/modifycar', async (req, res) => {
+app.put('/modifycar', async (req, res) => {
     const { car_id, car_name, car_price, car_image } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
