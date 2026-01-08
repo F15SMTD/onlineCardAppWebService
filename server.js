@@ -51,6 +51,32 @@ app.post('/addcar', async (req, res) => {
     }
 }); 
 
+//example route: delete a car
+app.post('/deletecar', async (req, res) => {
+    const { car_id } = req.body;
+    try{
+        let connection = await mysql.createConnection(dbConfig);
+        await connection.execute('DELETE FROM cars WHERE id = ?',[car_id]);
+        res.status(200).json({ message: 'Car with id ' + car_id + ' successfully deleted' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error - could not delete car with id '+ car_id});
+    }
+}); 
+
+//example route: modify a car
+app.post('/modifycar', async (req, res) => {
+    const { car_id, car_name, car_price, car_image } = req.body;
+    try{
+        let connection = await mysql.createConnection(dbConfig);
+        await connection.execute('UPDATE cars SET car_name = ?, car_price = ?, car_image = ? WHERE id = ?',[car_name, car_price, car_image, car_id]);
+        res.status(200).json({ message: 'Car with id ' + car_id + ' successfully modified' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error - could not modify car with id '+ car_id});
+    }
+}); 
+
 //example route: get all cards
 //app.get('/allcards', async (req, res) => {
 //    try {
