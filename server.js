@@ -38,16 +38,16 @@ app.get('/allcars', async (req, res) => {
     }
 });
 
-//example route: create a new card
+//example route: create a new car
 app.post('/addcar', async (req, res) => {
     const { car_name, car_price, car_image } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
         await connection.execute('INSERT INTO cars (car_name, car_price, car_image) VALUES (?, ?, ?)',[car_name, car_price, car_image]);
-        res.status(201).json({ message: 'Card' +car_name + 'successfully added' });
+        res.status(201).json({ message: 'Car ' +car_name + ' successfully added' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error - could not add card '+ car_name});
+        res.status(500).json({ message: 'Server error - could not add car '+ car_name});
     }
 }); 
 
@@ -56,7 +56,7 @@ app.delete('/deletecar', async (req, res) => {
     const { car_id } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('DELETE FROM cars WHERE id = ?',[car_id]);
+        await connection.execute('DELETE FROM cars WHERE car_id = ?',[car_id]);
         res.status(200).json({ message: 'Car with id ' + car_id + ' successfully deleted' });
     } catch (error) {
         console.error(error);
@@ -69,7 +69,7 @@ app.put('/modifycar', async (req, res) => {
     const { car_id, car_name, car_price, car_image } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('UPDATE cars SET car_name = ?, car_price = ?, car_image = ? WHERE id = ?',[car_name, car_price, car_image, car_id]);
+        await connection.execute('UPDATE cars SET car_name = ?, car_price = ?, car_image = ? WHERE car_id = ?',[car_name, car_price, car_image, car_id]);
         res.status(200).json({ message: 'Car with id ' + car_id + ' successfully modified' });
     } catch (error) {
         console.error(error);
