@@ -33,12 +33,12 @@ app.get('/allcars', async (req, res) => {
 });
 
 
-// ADD car (mobile admin / form)
+// Add cars
 app.post('/addcars', async (req, res) => {
   const { car_name, car_price, car_image } = req.body;
 
   if (!car_name || !car_price || !car_image) {
-    return res.status(400).json({ error: 'Missing fields' });
+    return res.status(400).json({ error: 'Missing car data' });
   }
 
   try {
@@ -59,7 +59,6 @@ app.post('/addcars', async (req, res) => {
 app.put('/cars/:id', async (req, res) => {
   const { id } = req.params;
   const { car_name, car_price, car_image } = req.body;
-
   try {
     const conn = await mysql.createConnection(dbConfig);
     await conn.execute(
@@ -77,7 +76,6 @@ app.put('/cars/:id', async (req, res) => {
 // DELETE car
 app.delete('/cars/:id', async (req, res) => {
   const { id } = req.params;
-
   try {
     const conn = await mysql.createConnection(dbConfig);
     await conn.execute('DELETE FROM cars WHERE car_id=?', [id]);
