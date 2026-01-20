@@ -51,12 +51,14 @@ app.post('/addcar', async (req, res) => {
     }
 }); 
 
-// DELETE a car using query parameter
-app.delete('/deletecar', async (req, res) => {
-    const car_id = req.query.car_id;  // get car_id from URL
+// DELETE a car using route parameter
+app.delete('/deletecar/:car_id', async (req, res) => {
+    const car_id = req.params.car_id; // get ID from URL
+
     if(!car_id){
         return res.status(400).json({ message: 'car_id is required' });
     }
+
     let connection;
     try {
         connection = await mysql.createConnection(dbConfig);
@@ -65,9 +67,11 @@ app.delete('/deletecar', async (req, res) => {
             'DELETE FROM cars WHERE idcars = ?',
             [car_id]
         );
+
         if(result.affectedRows === 0){
             return res.status(404).json({ message: 'Car with id ' + car_id + ' not found' });
         }
+
         res.status(200).json({ message: 'Car with id ' + car_id + ' successfully deleted' });
     } catch (error) {
         console.error(error);
@@ -76,6 +80,7 @@ app.delete('/deletecar', async (req, res) => {
         if(connection) await connection.end();
     }
 });
+
 
 
 //example route: modify a car
