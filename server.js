@@ -21,7 +21,7 @@ app.listen(port, () => {
 
 
 // GET all cars (mobile list page)
-app.get('/cars', async (req, res) => {
+app.get('/allcars', async (req, res) => {
   try {
     const conn = await mysql.createConnection(dbConfig);
     const [rows] = await conn.execute('SELECT * FROM cars');
@@ -34,7 +34,7 @@ app.get('/cars', async (req, res) => {
 
 
 // ADD car (mobile admin / form)
-app.post('/cars', async (req, res) => {
+app.post('/addcars', async (req, res) => {
   const { car_name, car_price, car_image } = req.body;
 
   if (!car_name || !car_price || !car_image) {
