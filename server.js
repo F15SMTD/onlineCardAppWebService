@@ -52,11 +52,11 @@ app.post('/addcar', async (req, res) => {
 }); 
 
 // DELETE a car using route parameter
-app.delete('/deletecar/:car_id', async (req, res) => {
-    const car_id = req.params.car_id; // get ID from URL
+app.delete('/deletecar/:idcars', async (req, res) => {
+    const idcars = req.params.idcars; // get ID from URL
 
-    if(!car_id){
-        return res.status(400).json({ message: 'car_id is required' });
+    if(!idcars){
+        return res.status(400).json({ message: 'idcars is required' });
     }
 
     let connection;
@@ -65,17 +65,17 @@ app.delete('/deletecar/:car_id', async (req, res) => {
 
         const [result] = await connection.execute(
             'DELETE FROM cars WHERE idcars = ?',
-            [car_id]
+            [idcars]
         );
 
         if(result.affectedRows === 0){
-            return res.status(404).json({ message: 'Car with id ' + car_id + ' not found' });
+            return res.status(404).json({ message: 'Car with id ' + idcars + ' not found' });
         }
 
-        res.status(200).json({ message: 'Car with id ' + car_id + ' successfully deleted' });
+        res.status(200).json({ message: 'Car with id ' + idcars + ' successfully deleted' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error - could not delete car with id ' + car_id });
+        res.status(500).json({ message: 'Server error - could not delete car with id ' + idcars });
     } finally {
         if(connection) await connection.end();
     }
@@ -85,14 +85,14 @@ app.delete('/deletecar/:car_id', async (req, res) => {
 
 //example route: modify a car
 app.put('/modifycar', async (req, res) => {
-    const { car_id, car_name, car_price, car_image } = req.body;
+    const { idcars, car_name, car_price, car_image } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('UPDATE cars SET car_name = ?, car_price = ?, car_image = ? WHERE car_id = ?',[car_name, car_price, car_image, car_id]);
-        res.status(200).json({ message: 'Car with id ' + car_id + ' successfully modified' });
+        await connection.execute('UPDATE cars SET car_name = ?, car_price = ?, car_image = ? WHERE idcars = ?',[car_name, car_price, car_image, idcars]);
+        res.status(200).json({ message: 'Car with id ' + idcars + ' successfully modified' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error - could not modify car with id '+ car_id});
+        res.status(500).json({ message: 'Server error - could not modify car with id '+ idcars});
     }
 }); 
 
